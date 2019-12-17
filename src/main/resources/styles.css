@@ -1,0 +1,56 @@
+.root {
+    -fx-background-color: #5a595e;
+}
+
+.button {
+    -fx-background-color: #133b04;
+    -fx-text-fill: white;
+    -fx-font-size: 12;
+    -fx-border-width: 5;
+    /*-fx-border-color: #133b04;*/
+    -fx-border-radius: 2;
+}
+
+.grassland-field {
+    -fx-background-color: #FFAF50;
+}
+
+.jungle-field {
+    -fx-background-color: #4BB462;
+}
+
+.field {
+    -fx-border-color: #2F3640;
+    -fx-border-width: 0.3;
+    -fx-border-radius: 0;
+}
+.tool-bar {
+    -fx-background-color: #0d2a03;
+}
+.menu-bar {
+    -fx-background-color: transparent;
+}
+.menu {
+    -fx-label-padding: 3px;
+}
+.menu .label, .menu-item .label {
+    -fx-text-fill: #eee;
+}
+.menu:hover, .menu:focused, .menu:pressed {
+    -fx-background-color: #052555;
+}
+.menu-item:hover {
+    -fx-background-color: #052555;
+}
+.context-menu {
+    -fx-background-color: rgba(0, 0, 0, 0.3);
+}
+
+.tile-tooltip {
+    -fx-font: normal bold 14 Langdon;
+    -fx-base: #AE3522;
+    -fx-text-fill: orange;
+    -fx-border-radius: 40;
+    -fx-background-color: #0d2a03;
+}
+
