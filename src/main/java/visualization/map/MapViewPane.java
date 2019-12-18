@@ -7,6 +7,7 @@ import map.WorldMap;
 
 public class MapViewPane extends VBox {
     private MapView mapView;
+
     public MapViewPane(WorldMap worldMap) {
         this.mapView = new MapView(worldMap);
         mapView.prefWidthProperty().bind(this.widthProperty());
@@ -16,7 +17,7 @@ public class MapViewPane extends VBox {
         mapView.maxWidthProperty().bind(this.widthProperty());
         mapView.maxHeightProperty().bind(this.heightProperty().divide(10).multiply(9));
 
-        mapView.setPadding(new Insets(10));
+        mapView.setPadding(new Insets(0));
 
         setBorder(new Border(new BorderStroke(Color.BLACK, Color.BLACK, Color.BLACK, Color.BLACK,
                 BorderStrokeStyle.SOLID, BorderStrokeStyle.SOLID, BorderStrokeStyle.SOLID, BorderStrokeStyle.SOLID,
