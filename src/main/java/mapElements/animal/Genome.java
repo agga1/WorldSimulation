@@ -51,4 +51,21 @@ public class Genome {
     public int[] getGenome() {
         return genome;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Genome genome1 = (Genome) object;
+        return Arrays.equals(genome, genome1.genome);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(genome);
+    }
+    @Override
+    public String toString(){
+        return Arrays.toString(genome);
+    }
 }

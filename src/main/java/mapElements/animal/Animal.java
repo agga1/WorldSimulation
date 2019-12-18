@@ -8,9 +8,7 @@ import visualization.Icon;
 import utils.Orientation;
 import utils.Vector2d;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Animal implements ILivingMapElement {
@@ -22,7 +20,10 @@ public class Animal implements ILivingMapElement {
     private IWorldMap map;
     private Set<IPositionChangeObserver> observers = new HashSet<>();
 
+    private List<Animal> ancestors = new ArrayList<>();
     private int nrOfChildren=0;
+    private int nrOfDescendants=0;
+    private boolean isTracked=false;
 
     public Animal(){
     }
@@ -34,6 +35,14 @@ public class Animal implements ILivingMapElement {
         this.position = initialPos;
         this.genome = genome;
         this.energy = energy;
+        addObserver(map);
+    }
+    public Animal(IWorldMap map, Vector2d initialPos, Genome genome, int energy, Animal father, Animal mother) {
+        this.map = map;
+        this.position = initialPos;
+        this.genome = genome;
+        this.energy = energy;
+        this.ancestors.addAll(List.of(father, mother));
         addObserver(map);
     }
     public void move(){
@@ -59,6 +68,7 @@ public class Animal implements ILivingMapElement {
         other.energy = other.energy*3/4;
         Genome childGenome = new Genome(this.genome, other.genome);
         nrOfChildren ++;
+        onNewKidInDaHouse();
         return Optional.of(new Animal(this.map, position, childGenome, newEnergy));
     }
 
@@ -74,17 +84,8 @@ public class Animal implements ILivingMapElement {
         return this.energy < 1;
     }
 
-    public Orientation getOrientation() {
-        return this.orientation;
-    }
-
     public Vector2d getPosition() {
         return this.position;
-    }
-
-    @Override
-    public Icon getIcon() {
-        return Icon.ANIMAL;
     }
 
     public void addObserver(IPositionChangeObserver observer){
@@ -95,21 +96,47 @@ public class Animal implements ILivingMapElement {
         observers.remove(observer);
     }
 
+    private void notifyAncestors(){
+        ancestors.forEach(Animal::onNewKidInDaHouse);
+    }
+
+    private void onNewKidInDaHouse(){
+        this.nrOfDescendants++;
+        notifyAncestors();
+    }
+
     private void positionChanged(Vector2d oldPosition, Vector2d newPosition){ // notify observers
         for(IPositionChangeObserver observer : observers){
             observer.positionChanged(this, oldPosition);
         }
     }
 
+    public void track(){
+        isTracked = true;
+    }
+    public boolean isTracked(){
+        return isTracked;
+    }
+
     public int getEnergy() {
         return energy;
+    }
+
+    public int getNrOfChildren() {
+        return nrOfChildren;
+    }
+
+    public Genome getGenome() {
+        return this.genome;
     }
 
     public String toString(){
         return "animal at: "+position+"\nenergy: "+energy;
     }
 
-    public int getNrOfChildren() {
-        return nrOfChildren;
+    @Override
+    public Icon getIcon() {
+        if(!isTracked) return Icon.ANIMAL;
+        return Icon.ANIMALTRACKED;
     }
 }

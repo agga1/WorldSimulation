@@ -1,3 +1,4 @@
+import configuration.ViewConfig;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -32,7 +33,7 @@ public class Main extends Application {
 
         this.simulationStatus = new SimulationStatus();
         worldMaps = List.of(new WorldMap(), new WorldMap()); // TODO prettify
-        SimulationsViewPane root = new SimulationsViewPane(simulationStatus, worldMaps, Screen.getPrimary().getVisualBounds().getWidth()*4/5, Screen.getPrimary().getVisualBounds().getHeight()*4/5);
+        SimulationsViewPane root = new SimulationsViewPane(simulationStatus, worldMaps, WINDOW_WIDTH, WINDOW_HEIGHT);
         this.button = new Button();
         button.setText("start");
         this.vBox = new VBox(button);
@@ -51,7 +52,7 @@ public class Main extends Application {
         });
         thread.setDaemon(true);
         thread.start();
-        stage.setScene(new Scene(root,         root.getWidth()*5/4, root.getHeight()*5/4));
+        stage.setScene(new Scene(root, root.getWidth(), root.getHeight()));
 //        stage.setScene(new Scene(vBox, WINDOW_WIDTH, WINDOW_HEIGHT));
         stage.show();
 
@@ -60,7 +61,6 @@ public class Main extends Application {
     private void updateSimulations() {
         worldMaps.forEach(worldMap -> worldMap.onUpdate(simulationStatus.step));
 //        button.setText(String.valueOf(worldMaps.get(0).getDay()));
-        System.out.println(worldMaps.get(0).getStats());
 
     }
 

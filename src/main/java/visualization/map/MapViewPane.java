@@ -1,32 +1,30 @@
 package visualization.map;
 
-import javafx.geometry.Insets;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import map.WorldMap;
+import utils.Vector2d;
 
-import java.util.stream.Collector;
+import java.util.Set;
 
-public class MapViewPane extends VBox {
+public class MapViewPane extends VBox implements UpdateListener{
     private MapView mapView;
     private StatsView statsView;
+    private WorldMap worldMap;
 
     public MapViewPane(WorldMap worldMap, double prefWidth, double prefHeight) {
         setPrefWidth(prefWidth);
         setPrefHeight(prefHeight);
+        this.worldMap = worldMap;
+        worldMap.setViewController(this);
+        this.statsView = new StatsView( prefWidth, prefHeight*1/10);
         this.mapView = new MapView(worldMap, prefWidth, prefHeight*9/10);
-        this.statsView = new StatsView(worldMap, prefWidth, prefHeight*1/10);
 
-//        statsView.prefWidthProperty().bind(this.getPrefWidth());
-//        statsView.prefHeightProperty().bind(this.heightProperty().divide(10).multiply(2));
-
-//        mapView.setPadding(new Insets(0));
-//        Color borderColor = Color.rgb(57, 212, 54);
-//        setBorder(new Border(new BorderStroke(borderColor,borderColor, borderColor, borderColor,
-//                BorderStrokeStyle.SOLID, BorderStrokeStyle.SOLID, BorderStrokeStyle.SOLID, BorderStrokeStyle.SOLID,
-//                CornerRadii.EMPTY, BorderStroke.THIN, Insets.EMPTY)));
-
-        this.getChildren().add(mapView);
+        this.getChildren().addAll(mapView, statsView);
         System.out.println(getWidth());
+    }
+    @Override
+    public void onUpdate(Set<Vector2d> updated) {
+        mapView.onUpdate(updated);  // TODO pass objects here
+        statsView.onUpdate(worldMap.getStats());
     }
 }

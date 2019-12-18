@@ -15,7 +15,7 @@ import java.util.Set;
 
 import static java.lang.Double.min;
 
-public class MapView extends GridPane implements UpdateListener {
+public class MapView extends GridPane {
     private WorldMap worldMap;
     private HashMap<Vector2d, TileView> nodes = new HashMap<>();
 
@@ -23,7 +23,7 @@ public class MapView extends GridPane implements UpdateListener {
         setPrefWidth(prefWidth);
         setPrefHeight(prefHeight);
         this.worldMap = worldMap;
-        worldMap.setViewController(this);
+
         worldMap.getRect().toVectors().forEach(this::addTile);
         this.setHgap(1);
         this.setVgap(1);
@@ -35,21 +35,17 @@ public class MapView extends GridPane implements UpdateListener {
                 this.getPrefHeight()/WorldConfig.getInstance().params.height-1);
         System.out.println(edge);
         TileView tile = new TileView(edge, edge);
-//        tile.setFitWidth(this.getPrefWidth()/WorldConfig.getInstance().params.width);
-//        tile.setFitHeight(this.getPrefHeight()/WorldConfig.getInstance().params.height);
 
         tile.updateTile(null);
         this.add(tile, position.x, position.y, 1, 1);
         nodes.put(position, tile);
     }
 
-    @Override
     public void onUpdate(Set<Vector2d> updated) {
         updated.forEach(pos->onTileUpdate(pos, worldMap.objectAt(pos)));
     }
 
-    @Override
-    public void onTileUpdate(Vector2d position, IMapElement mapElement) {
+    private void onTileUpdate(Vector2d position, IMapElement mapElement) {
         TileView node = nodes.get(position);
         node.updateTile(mapElement);
 

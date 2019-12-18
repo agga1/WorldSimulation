@@ -8,6 +8,4 @@ import java.util.Set;
 
 public interface UpdateListener {
     void onUpdate(Set<Vector2d> updated);
-
-    void onTileUpdate(Vector2d position, IMapElement mapElement);
 }

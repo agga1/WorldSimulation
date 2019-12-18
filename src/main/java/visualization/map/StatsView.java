@@ -2,22 +2,23 @@ package visualization.map;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import map.WorldMap;
+import map.WorldStats;
 
 
 public class StatsView extends VBox {
-    private Label day;
-    private WorldMap worldMap;
-    public StatsView(WorldMap worldMap, double prefWidth, double prefHeight){
+    private Text stats;
+
+    public StatsView( double prefWidth, double prefHeight){
         setPrefHeight(prefHeight);
         setPrefWidth(prefWidth);
-        this.worldMap = worldMap;
-        day = new Label("0");
-        this.getChildren().add(day);
+        stats = new Text("");
+        this.getChildren().add(stats);
     }
 
-    public void unUpdate(){
-        day.setText(String.valueOf(worldMap.getDay()));
+    void onUpdate(WorldStats worldStats){
+        stats.setText(worldStats.toString());
     }
 
 

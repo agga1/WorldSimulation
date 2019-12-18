@@ -8,11 +8,13 @@ import mapElements.animal.AnimalHashMap;
 import visualization.map.MapView;
 import utils.Rect;
 import utils.Vector2d;
+import visualization.map.MapViewPane;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
+// TODO priority for tracke animals
 import static java.lang.StrictMath.max;
+import static utils.Vector2d.randomFromSet;
 
 public class WorldMap implements IWorldMap {
     private final WorldConfig config = WorldConfig.getInstance();
@@ -22,27 +24,20 @@ public class WorldMap implements IWorldMap {
     private Map<Vector2d, Grass> grassMap = new HashMap<>();
     private AnimalHashMap animalMap = new AnimalHashMap();
     private Set<Vector2d> freeSpace = new HashSet<>();
-    private MapView controller;
-    private int maxEnergy;
 
-    //statistics
-    private int allChildrenWithLivingParents=0;
-    private int nrOfDeaths=0;
-    private int lifeLengthForDeadSum=0;
-
-
+    //statistics and visualization
+    private MapViewPane controller;
     private Set<Vector2d> changedTiles = new HashSet<>();
-
-    private int day = 0;
+    private WorldStats worldStats;
 
     public WorldMap(){
         this.rect = WorldConfig.getInstance().mapBounds();
         this.jungleRect = WorldConfig.getInstance().jungleBounds();
         this.freeSpace.addAll(this.rect.toVectors());
-        this.maxEnergy = WorldConfig.getInstance().params.startEnergy;
         populate();
+        this.worldStats = new WorldStats(animals);
     }
-    public void setViewController(MapView controller){
+    public void setViewController(MapViewPane controller){
         this.controller = controller;
     }
 
@@ -70,39 +65,34 @@ public class WorldMap implements IWorldMap {
 
     public void onUpdate(int step) {
         changedTiles = new HashSet<>();
-        for(int i=0;i<step;i++){
+        for(int i=0;i<step;i++)
             simulate();
-        }
-//        changedTiles.forEach(pos -> notifyTileChanged(pos, objectAt(pos)));
+
         notifyController(changedTiles);
     }
+
     public void simulate(){
-        day++;
-        maxEnergy = max(maxEnergy-1, 0);
         // handle all deaths
         List<Animal> justDied = animals.stream().filter(Animal::isDead).collect(Collectors.toList());
-        //statistics
-        justDied.forEach(a-> allChildrenWithLivingParents -=a.getNrOfChildren());
-        lifeLengthForDeadSum += day*justDied.size();
-        nrOfDeaths += justDied.size();
         justDied.forEach(this::removeDeadAnimal);
 
         // move all animals and eat grass
         animals.forEach(Animal::move);
         animalMap.keySet().forEach(this::eatGrass);
-//
-//        // procreate in each region
+
+        // procreate in each region
         List<Animal> newborns = animalMap.keySet().stream()
                 .map(this::procreate)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toList());
         newborns.forEach(this::place);
-//        // statistics
-        allChildrenWithLivingParents += newborns.size()*2; // for each child 2 parents have +1 child
 
         growGrass();
+
+        this.worldStats.updateNextDay(justDied, newborns, animals, grassMap.size());
     }
+
     private void growGrass(){
         Set<Vector2d> freeJungle = freeSpace.stream()
                 .filter(v-> this.jungleRect.contains(v)).collect(Collectors.toSet());
@@ -119,34 +109,23 @@ public class WorldMap implements IWorldMap {
             updateTile(onJungle);
         }
     }
-    private static Vector2d randomFromSet(Set<Vector2d> set){
-        if(set.isEmpty()) return null;
-        int idx = new Random().nextInt(set.size());
-        int i=0;
-        for(Vector2d vector:set){
-            if(i==idx) return vector;
-            i++;
-        }
-        return null;
-    }
+
     private void eatGrass(Vector2d position){
         if(grassMap.get(position)==null) return;
         List<Animal> animalsAtPos = animalMap.get(position);
         animalsAtPos.sort(Comparator.comparing(Animal::getEnergy));
-        List<Animal> strongest = new ArrayList<>();
-        strongest.add(animalsAtPos.get(0));
-        for(int i=1;i<animalsAtPos.size();i++){
-            strongest.add(animalsAtPos.get(i));
-        }
-        double part = 1.0/strongest.size();
+
+        List<Animal> allStrongest = new ArrayList<>();
+        allStrongest.add(animalsAtPos.get(0));
+        for(int i=1;i<animalsAtPos.size();i++)
+            allStrongest.add(animalsAtPos.get(i));
+
+        double partForEach = 1.0/allStrongest.size();
         grassMap.remove(position);
-        strongest.forEach(a->a.eatGrass(part));
-        maxEnergy = strongest.get(0).getEnergy();
+        allStrongest.forEach(a->a.eatGrass(partForEach));
     }
 
-    public boolean isOccupied(Vector2d vector2d){
-        return (objectAt(vector2d) != null);
-    }
+    public boolean isOccupied(Vector2d vector2d){ return (objectAt(vector2d) != null); }
 
     public void positionChanged(Animal animal, Vector2d from){
         animalMap.removeAnimal(animal, from);
@@ -160,13 +139,7 @@ public class WorldMap implements IWorldMap {
         updateTile(animal.getPosition());
         animals.remove(animal);
     }
-    private void updateTile(Vector2d position){
-        if(objectAt(position)==null)
-            freeSpace.add(position);
-        else
-            freeSpace.remove(position);
-        changedTiles.add(position);
-    }
+
     private Optional<Animal> procreate(Vector2d position){
         List<Animal> animalsAtPos = animalMap.get(position);
         if(animalsAtPos.size() < 2 ) return Optional.empty();
@@ -190,10 +163,16 @@ public class WorldMap implements IWorldMap {
        return parent1.procreate(parent2, childPosition);
     }
 
-    @Override
-    public boolean canMoveTo(Vector2d pos){
-        return true; // no restrictions
+    private void updateTile(Vector2d position){
+        if(objectAt(position)==null)
+            freeSpace.add(position);
+        else
+            freeSpace.remove(position);
+        changedTiles.add(position);
     }
+
+    @Override
+    public boolean canMoveTo(Vector2d pos){ return true;  }
 
     public IMapElement objectAt(Vector2d pos){ // returns any object
         List<Animal> animalsAtPos = animalMap.get(pos);
@@ -201,60 +180,20 @@ public class WorldMap implements IWorldMap {
         return grassMap.get(pos);
     }
 
-    public String toString(){
-        return "map";
-    }
+    public String toString(){ return "map"; }
 
-    public int getMaxEnergy() {
-        return maxEnergy;
-    }
-
-    @Override
+    @Override // TODO get rect instead
     public Vector2d[] getBoundaries() {
         return new Vector2d[]{this.rect.lowerLeft, this.rect.upperRight};
     }
     public Rect getRect(){ return this.rect; }
 
-    public Rect getJungleRect() {
-        return jungleRect;
-    }
+    public Rect getJungleRect() { return jungleRect; }
 
     private void notifyController(Set<Vector2d> changedTiles){
         if(controller!= null)
             controller.onUpdate(changedTiles);
     }
-    private void notifyTileChanged(Vector2d position, IMapElement object){
-        if(controller != null)
-            controller.onTileUpdate(position, object);
-    }
 
-    //statistics
-    public int getNrOfAnimals(){
-        return animals.size();
-    }
-
-    public int getNrOfPlants(){
-        return grassMap.keySet().size();
-    }
-    public double getAverageEnergy(){
-        return (double)animals.stream().map(Animal::getEnergy).reduce(0, Integer::sum) /animals.size();
-    }
-
-    public double avgLifeExpectancy() {
-        return (double)lifeLengthForDeadSum/nrOfDeaths;
-    }
-
-    /**
-     * @return average nr of children for living animals
-     */
-    public int avgNrOfChildren() {
-        return allChildrenWithLivingParents/animals.size();
-    }
-
-    public int getDay(){
-        return day;
-    }
-    public String getStats(){
-        return String.valueOf(getDay())+ " "+animals.size()+" "+grassMap.size()+" max en:"+maxEnergy;
-    }
+    public WorldStats getStats(){ return this.worldStats; }
 }
