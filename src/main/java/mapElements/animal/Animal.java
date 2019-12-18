@@ -1,9 +1,10 @@
 package mapElements.animal;
 
-import configuration.Config;
+import configuration.WorldConfig;
 import map.IPositionChangeObserver;
 import map.IWorldMap;
-import mapElements.IMapElement;
+import mapElements.ILivingMapElement;
+import visualization.Icon;
 import utils.Orientation;
 import utils.Vector2d;
 
@@ -12,8 +13,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Animal implements IMapElement {
-    private static int minEnergy = Config.getInstance().params.startEnergy/2;  // minimum energy needed to procreate
+public class Animal implements ILivingMapElement {
+    private static int minEnergy = WorldConfig.getInstance().params.startEnergy/2;  // minimum energy needed to procreate
     private Orientation orientation = Orientation.NORTH;
     private Vector2d position;
     private Genome genome;
@@ -26,7 +27,7 @@ public class Animal implements IMapElement {
     public Animal(){
     }
     public Animal(IWorldMap map, Vector2d initialPos) { // TODO make builder?
-        this(map, initialPos, new Genome(), Config.getInstance().params.startEnergy);
+        this(map, initialPos, new Genome(), WorldConfig.getInstance().params.startEnergy);
     }
     public Animal(IWorldMap map, Vector2d initialPos, Genome genome, int energy) {
         this.map = map;
@@ -37,7 +38,7 @@ public class Animal implements IMapElement {
     }
     public void move(){
 
-        this.energy -= Config.getInstance().params.moveEnergy; // movement takes 1 energy
+        this.energy -= WorldConfig.getInstance().params.moveEnergy; // movement takes 1 energy
         int geneIndex = ThreadLocalRandom.current().nextInt(this.genome.getGenome().length);
         int turnBy = this.genome.getGeneAt(geneIndex);
         this.orientation = this.orientation.turnBy(turnBy);
@@ -66,7 +67,7 @@ public class Animal implements IMapElement {
     }
 
     public void eatGrass(double part){
-        this.energy = (int) (this.energy+ (Config.getInstance().params.plantEnergy)*part);
+        this.energy = (int) (this.energy+ (WorldConfig.getInstance().params.plantEnergy)*part);
     }
 
     public boolean isDead(){
@@ -79,6 +80,11 @@ public class Animal implements IMapElement {
 
     public Vector2d getPosition() {
         return this.position;
+    }
+
+    @Override
+    public Icon getIcon() {
+        return Icon.ANIMAL;
     }
 
     public void addObserver(IPositionChangeObserver observer){

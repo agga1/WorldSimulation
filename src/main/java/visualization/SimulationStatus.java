@@ -1,7 +1,7 @@
 package visualization;
 
 public class SimulationStatus {
-        public boolean running = true;
-        public long interval = 500;
-        public int step = 1;
+    public int interval = 500;
+    public int step=1;
+    public boolean running=true;
 }

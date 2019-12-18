@@ -1,26 +1,26 @@
 package map;
 
-import configuration.Config;
-import mapElements.Grass;
+import configuration.WorldConfig;
+import mapElements.grass.Grass;
 import mapElements.IMapElement;
 import mapElements.animal.Animal;
 import mapElements.animal.AnimalHashMap;
+import visualization.map.MapView;
 import utils.Rect;
 import utils.Vector2d;
-import visualization.WorldView;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class WorldMap implements IWorldMap {
-    private final Config config = Config.getInstance();
+    private final WorldConfig config = WorldConfig.getInstance();
     private Rect rect;
     private Rect jungleRect;
     private List<Animal> animals = new ArrayList<>();
     private Map<Vector2d, Grass> grassMap = new HashMap<>();
     private AnimalHashMap animalMap = new AnimalHashMap();
     private Set<Vector2d> freeSpace = new HashSet<>();
-    private WorldView controller; // TODO: single
+    private MapView controller;
     private int maxEnergy;
 
     //statistics
@@ -34,15 +34,14 @@ public class WorldMap implements IWorldMap {
     private int day = 0;
 
     public WorldMap(){
-        this(null);
-    }
-    public WorldMap(WorldView controller){
-        this.controller = controller;
-        this.rect = Config.getInstance().mapBounds();
-        this.jungleRect = Config.getInstance().jungleBounds();
+        this.rect = WorldConfig.getInstance().mapBounds();
+        this.jungleRect = WorldConfig.getInstance().jungleBounds();
         this.freeSpace.addAll(this.rect.toVectors());
-        this.maxEnergy = Config.getInstance().params.startEnergy;
+        this.maxEnergy = WorldConfig.getInstance().params.startEnergy;
         populate();
+    }
+    public void setViewController(MapView controller){
+        this.controller = controller;
     }
 
     /**
