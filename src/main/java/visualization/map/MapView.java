@@ -1,32 +1,42 @@
 package visualization.map;
 
 import configuration.WorldConfig;
-import javafx.scene.layout.GridPane;
+import javafx.geometry.Insets;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import map.WorldMap;
 import mapElements.IMapElement;
 import utils.Vector2d;
 
+import java.io.ObjectInputFilter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+
+import static java.lang.Double.min;
 
 public class MapView extends GridPane implements UpdateListener {
     private WorldMap worldMap;
     private HashMap<Vector2d, TileView> nodes = new HashMap<>();
 
-    public MapView(WorldMap worldMap){
+    public MapView(WorldMap worldMap, double prefWidth, double prefHeight){
+        setPrefWidth(prefWidth);
+        setPrefHeight(prefHeight);
         this.worldMap = worldMap;
         worldMap.setViewController(this);
         worldMap.getRect().toVectors().forEach(this::addTile);
+        this.setHgap(1);
+        this.setVgap(1);
+        Color borderColor = Color.rgb(157, 112, 54);
     }
 
-    private void addTile(Vector2d position){
-        TileView tile = new TileView();
-        tile.fitWidthProperty().bind(this.widthProperty()
-                .subtract(this.getPadding().getLeft()+this.getPadding().getRight())
-                .divide(WorldConfig.getInstance().params.width));
-        tile.fitHeightProperty().bind(this.heightProperty()
-                .subtract(this.getPadding().getTop()+this.getPadding().getBottom())
-                .divide(WorldConfig.getInstance().params.width));
+    private void addTile(Vector2d position){// TODO - 50
+        double edge = min(this.getPrefWidth()/WorldConfig.getInstance().params.width -1,
+                this.getPrefHeight()/WorldConfig.getInstance().params.height-1);
+        System.out.println(edge);
+        TileView tile = new TileView(edge, edge);
+//        tile.setFitWidth(this.getPrefWidth()/WorldConfig.getInstance().params.width);
+//        tile.setFitHeight(this.getPrefHeight()/WorldConfig.getInstance().params.height);
 
         tile.updateTile(null);
         this.add(tile, position.x, position.y, 1, 1);
@@ -34,7 +44,7 @@ public class MapView extends GridPane implements UpdateListener {
     }
 
     @Override
-    public void onUpdate(List<Vector2d> updated) {
+    public void onUpdate(Set<Vector2d> updated) {
         updated.forEach(pos->onTileUpdate(pos, worldMap.objectAt(pos)));
     }
 

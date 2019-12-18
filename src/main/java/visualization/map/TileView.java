@@ -11,9 +11,10 @@ import visualization.Icon;
 public class TileView extends ImageView {
     private Tooltip tooltip;
 
-    public TileView() {
+    public TileView(double prefWidth, double prefHeight) {
         tooltip = new Tooltip("Empty");
-
+        this.setFitWidth(prefWidth);
+        this.setFitHeight(prefHeight);
         tooltip.setShowDelay(Duration.ZERO);
         tooltip.setShowDuration(Duration.INDEFINITE);
         tooltip.getStyleClass().add("tile-tooltip");
@@ -23,7 +24,7 @@ public class TileView extends ImageView {
     public void updateTile(IMapElement mapElement) { // TODO pass map element
         this.setEffect(null);
         if(mapElement == null){
-            setImage(Icon.FIELD.img);
+            setImage(Icon.FIELD.img);  //Icon.FIELD.img
             tooltip.setText("empty");
             return;
         }

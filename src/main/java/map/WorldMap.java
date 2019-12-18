@@ -12,6 +12,8 @@ import utils.Vector2d;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.lang.StrictMath.max;
+
 public class WorldMap implements IWorldMap {
     private final WorldConfig config = WorldConfig.getInstance();
     private Rect rect;
@@ -71,11 +73,12 @@ public class WorldMap implements IWorldMap {
         for(int i=0;i<step;i++){
             simulate();
         }
-        changedTiles.forEach(pos -> notifyTileChanged(pos, objectAt(pos)));
+//        changedTiles.forEach(pos -> notifyTileChanged(pos, objectAt(pos)));
+        notifyController(changedTiles);
     }
     public void simulate(){
         day++;
-
+        maxEnergy = max(maxEnergy-1, 0);
         // handle all deaths
         List<Animal> justDied = animals.stream().filter(Animal::isDead).collect(Collectors.toList());
         //statistics
@@ -87,21 +90,21 @@ public class WorldMap implements IWorldMap {
         // move all animals and eat grass
         animals.forEach(Animal::move);
         animalMap.keySet().forEach(this::eatGrass);
-
-        // procreate in each region
+//
+//        // procreate in each region
         List<Animal> newborns = animalMap.keySet().stream()
                 .map(this::procreate)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toList());
         newborns.forEach(this::place);
-        // statistics
+//        // statistics
         allChildrenWithLivingParents += newborns.size()*2; // for each child 2 parents have +1 child
 
         growGrass();
     }
     private void growGrass(){
-        Set<Vector2d> freeJungle = Set.copyOf(freeSpace).stream()
+        Set<Vector2d> freeJungle = freeSpace.stream()
                 .filter(v-> this.jungleRect.contains(v)).collect(Collectors.toSet());
         Set<Vector2d> freeDesert = new HashSet<>(freeSpace);
         freeDesert.removeAll(freeJungle);
@@ -216,8 +219,13 @@ public class WorldMap implements IWorldMap {
         return jungleRect;
     }
 
+    private void notifyController(Set<Vector2d> changedTiles){
+        if(controller!= null)
+            controller.onUpdate(changedTiles);
+    }
     private void notifyTileChanged(Vector2d position, IMapElement object){
-        controller.onTileUpdate(position, object);
+        if(controller != null)
+            controller.onTileUpdate(position, object);
     }
 
     //statistics
@@ -241,5 +249,12 @@ public class WorldMap implements IWorldMap {
      */
     public int avgNrOfChildren() {
         return allChildrenWithLivingParents/animals.size();
+    }
+
+    public int getDay(){
+        return day;
+    }
+    public String getStats(){
+        return String.valueOf(getDay())+ " "+animals.size()+" "+grassMap.size()+" max en:"+maxEnergy;
     }
 }
