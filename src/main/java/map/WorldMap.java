@@ -1,6 +1,7 @@
 package map;
 
 import configuration.WorldConfig;
+import mapElements.ILivingMapElement;
 import mapElements.grass.Grass;
 import mapElements.IMapElement;
 import mapElements.animal.Animal;
@@ -29,6 +30,7 @@ public class WorldMap implements IWorldMap {
     private MapViewPane controller;
     private Set<Vector2d> changedTiles = new HashSet<>();
     private WorldStats worldStats;
+    private Animal tracked = null;
 
     public WorldMap(){
         this.rect = WorldConfig.getInstance().mapBounds();
@@ -72,14 +74,14 @@ public class WorldMap implements IWorldMap {
     }
 
     public void simulate(){
-        // handle all deaths
+//        // handle all deaths
         List<Animal> justDied = animals.stream().filter(Animal::isDead).collect(Collectors.toList());
         justDied.forEach(this::removeDeadAnimal);
-
-        // move all animals and eat grass
+//
+//        // move all animals and eat grass
         animals.forEach(Animal::move);
         animalMap.keySet().forEach(this::eatGrass);
-
+//
         // procreate in each region
         List<Animal> newborns = animalMap.keySet().stream()
                 .map(this::procreate)
@@ -87,8 +89,9 @@ public class WorldMap implements IWorldMap {
                 .map(Optional::get)
                 .collect(Collectors.toList());
         newborns.forEach(this::place);
-
+//
         growGrass();
+//        this.worldStats.updateNextDay(Collections.<Animal>emptyList(), Collections.<Animal>emptyList(), animals, grassMap.size());
 
         this.worldStats.updateNextDay(justDied, newborns, animals, grassMap.size());
     }
@@ -127,7 +130,7 @@ public class WorldMap implements IWorldMap {
 
     public boolean isOccupied(Vector2d vector2d){ return (objectAt(vector2d) != null); }
 
-    public void positionChanged(Animal animal, Vector2d from){
+    public void onPositionChanged(Animal animal, Vector2d from){
         animalMap.removeAnimal(animal, from);
         updateTile(from);
         animalMap.addAnimal(animal);
@@ -160,7 +163,7 @@ public class WorldMap implements IWorldMap {
             int idx = new Random().nextInt(9);
             childPosition = positions.get(idx);
         }
-       return parent1.procreate(parent2, childPosition);
+       return parent1.procreate(parent2, childPosition, worldStats.getDay());
     }
 
     private void updateTile(Vector2d position){
@@ -176,7 +179,10 @@ public class WorldMap implements IWorldMap {
 
     public IMapElement objectAt(Vector2d pos){ // returns any object
         List<Animal> animalsAtPos = animalMap.get(pos);
-        if(animalsAtPos != null) return animalsAtPos.get(0);
+        if(animalsAtPos != null) {
+            if(tracked!= null && tracked.getPosition() == pos) return tracked;
+            return animalsAtPos.get(0);
+        }
         return grassMap.get(pos);
     }
 
@@ -193,6 +199,23 @@ public class WorldMap implements IWorldMap {
     private void notifyController(Set<Vector2d> changedTiles){
         if(controller!= null)
             controller.onUpdate(changedTiles);
+    }
+
+    public void onTrackingChanged(Animal animal, boolean isTracked){
+        if(this.tracked != null){  // untrack previous animal
+            this.tracked.untrack();
+            notifyController(Set.of(this.tracked.getPosition()));
+        }
+        if(!isTracked)
+            this.tracked = null;
+        else{
+            this.tracked = animal;
+            this.tracked.track();
+        }
+    }
+
+    public Animal getTracked(){
+        return this.tracked;
     }
 
     public WorldStats getStats(){ return this.worldStats; }

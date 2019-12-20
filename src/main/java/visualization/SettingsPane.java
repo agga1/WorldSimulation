@@ -10,6 +10,8 @@ import javafx.scene.layout.VBox;
 
 import java.util.List;
 
+import static java.lang.Math.min;
+
 public class SettingsPane extends VBox {
     public SettingsPane(SimulationStatus simulationStatus, double prefWidth, double prefHeight) {
         setPrefHeight(prefHeight);
@@ -42,11 +44,14 @@ public class SettingsPane extends VBox {
 
         Button stepUp = new Button();
         stepUp.setText("step x 10");
-        stepUp.setOnAction(actionEvent -> simulationStatus.step *=10);
+        stepUp.setOnAction(actionEvent -> simulationStatus.step =min(1000, simulationStatus.step*10));
         Button stepDown = new Button();
         stepDown.setText("step / 10");
         stepDown.setOnAction(actionEvent -> simulationStatus.step = simulationStatus.step >= 10 ? simulationStatus.step/=10 : simulationStatus.step);
-        List<Button> buttons = List.of(pauseButton, stepUp, stepDown);
+        Button showGenome = new Button();
+        showGenome.setText("show dominant genome");
+        showGenome.setOnAction(actionEvent -> simulationStatus.showingGenome = !simulationStatus.showingGenome);
+        List<Button> buttons = List.of(pauseButton, stepUp, stepDown, showGenome);
         buttons.forEach(b -> b.setMinHeight(40));
         return buttons;
     }

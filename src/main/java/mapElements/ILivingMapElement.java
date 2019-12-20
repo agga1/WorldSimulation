@@ -5,4 +5,6 @@ public interface ILivingMapElement extends IMapElement {
     void track();
 
     boolean isTracked();
+
+    void untrack();
 }

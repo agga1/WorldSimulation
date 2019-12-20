@@ -8,6 +8,7 @@ import static configuration.ResourceParser.parseImage;
 public enum Icon {
     ANIMAL("animal.png"),
     ANIMALTRACKED("animalTracked.png"),
+    ANIMALHIGHLIGHT("animalHighlight.png"),
     GRASS("weed.png"),
     FIELD("field.png"),
     PLAY("pause-btn.png"),

@@ -41,15 +41,16 @@ public class WorldStats {
             day++;
 
             justDied.forEach(a-> allChildrenWithLivingParents -=a.getNrOfChildren());
-            lifeLengthForDeadSum += day*justDied.size();
+            justDied.forEach(a -> a.setDeathday(day));
+            lifeLengthForDeadSum = lifeLengthForDeadSum + justDied.size()*day- justDied.stream().mapToInt(Animal::getBirthday).sum();
             nrOfDeaths += justDied.size();
-//            removeFromGenomeVariations(justDied);
-//            addToGenomeVariations(newborns);
+            removeFromGenomeVariations(justDied);
+            addToGenomeVariations(newborns);
 
             allChildrenWithLivingParents += newborns.size()*2; // for each child 2 parents have +1 child
             this.nrOfAnimals = animals.size();
             this.nrOfGrass = nrOfGrass;
-            this.averageEnergy = animals.stream().mapToInt(Animal::getEnergy).sum()/animals.size();
+            this.averageEnergy = nrOfAnimals > 0 ? animals.stream().mapToInt(Animal::getEnergy).sum()/nrOfAnimals : 0;
 
         }
         public int getDay(){
@@ -63,7 +64,7 @@ public class WorldStats {
         }
 
         public double getAverageChildCount() {
-            return (double)allChildrenWithLivingParents/nrOfAnimals;
+            return nrOfAnimals > 0 ? (double) allChildrenWithLivingParents/nrOfAnimals : 0;
         }
     public double getAverageLifeSpan(){
             return nrOfDeaths == 0 ? 0 : (double) lifeLengthForDeadSum/nrOfDeaths;
@@ -77,7 +78,7 @@ public class WorldStats {
     public String toString() {
         return "WorldStats:" +
                 "\n day=" + day +
-                "\n dominantGenome=" + getDominantGenome()+
+                "\n dominantGenome=\n" + getDominantGenome()+
                 "\n average nr of children=" + getAverageChildCount() +
                 "\n average lifespan=" + getAverageLifeSpan() +
                 "\n nrOfAnimals=" + nrOfAnimals +
