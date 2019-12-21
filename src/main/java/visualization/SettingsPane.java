@@ -2,7 +2,6 @@ package visualization;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -12,8 +11,8 @@ import java.util.List;
 
 import static java.lang.Math.min;
 
-public class SettingsPane extends VBox {
-    public SettingsPane(SimulationStatus simulationStatus, double prefWidth, double prefHeight) {
+class SettingsPane extends VBox {
+    SettingsPane(SimulationStatus simulationStatus, double prefWidth, double prefHeight) {
         setPrefHeight(prefHeight);
         setPrefWidth(prefWidth);
 
@@ -34,7 +33,7 @@ public class SettingsPane extends VBox {
         getChildren().addAll(buttonsPane);
     }
 
-    private List<Button> addButtons(SimulationStatus simulationStatus){
+    private List<Button> addButtons(SimulationStatus simulationStatus) {
         Button pauseButton = new Button();
         pauseButton.setGraphic(simulationStatus.running ? new ImageView(Icon.PLAY.img) : new ImageView(Icon.PAUSE.img));
         pauseButton.setOnAction(event -> {
@@ -44,10 +43,10 @@ public class SettingsPane extends VBox {
 
         Button stepUp = new Button();
         stepUp.setText("step x 10");
-        stepUp.setOnAction(actionEvent -> simulationStatus.step =min(1000, simulationStatus.step*10));
+        stepUp.setOnAction(actionEvent -> simulationStatus.step = min(1000, simulationStatus.step * 10));
         Button stepDown = new Button();
         stepDown.setText("step / 10");
-        stepDown.setOnAction(actionEvent -> simulationStatus.step = simulationStatus.step >= 10 ? simulationStatus.step/=10 : simulationStatus.step);
+        stepDown.setOnAction(actionEvent -> simulationStatus.step = simulationStatus.step >= 10 ? simulationStatus.step /= 10 : simulationStatus.step);
 
         List<Button> buttons = List.of(pauseButton, stepUp, stepDown);
         buttons.forEach(b -> b.setMinHeight(40));

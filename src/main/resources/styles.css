@@ -10,6 +10,7 @@
     /*-fx-border-color: #133b04;*/
     -fx-border-radius: 2;
 }
+
 .button:hover {
     -fx-background-color: #723146;
 }
@@ -17,21 +18,27 @@
 .tool-bar {
     -fx-background-color: #0d2a03;
 }
+
 .menu-bar {
     -fx-background-color: transparent;
 }
+
 .menu {
     -fx-label-padding: 3px;
 }
+
 .menu .label, .menu-item .label {
     -fx-text-fill: #eee;
 }
+
 .menu:hover, .menu:focused, .menu:pressed {
     -fx-background-color: #B34B6C;
 }
+
 .menu-item:hover {
     -fx-background-color: #B33559;
 }
+
 .context-menu {
     -fx-background-color: rgba(0, 0, 0, 0.3);
 }

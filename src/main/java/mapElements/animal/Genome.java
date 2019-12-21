@@ -12,16 +12,17 @@ public class Genome {
     private static final Collection<Integer> possibleGenes = List.of(0, 1, 2, 3, 4, 5, 6, 7);
     private int[] genome;
 
-    public Genome(){  // generate new random genome
+    Genome() {  // generate new random genome
         int[] genes = new int[genomeLength];
-        for(int i = 0; i<genomeLength; i++ ){
+        for (int i = 0; i < genomeLength; i++) {
             genes[i] = ThreadLocalRandom.current().nextInt(0, 8);
         }
         this.genome = standardizeGenes(genes);
     }
-    public Genome(Genome parent1, Genome parent2){
-        int div1 = ThreadLocalRandom.current().nextInt(1, genomeLength-2);
-        int div2 = ThreadLocalRandom.current().nextInt(div1, genomeLength-1); // at least 1 gene in each frag
+
+    Genome(Genome parent1, Genome parent2) {
+        int div1 = ThreadLocalRandom.current().nextInt(1, genomeLength - 2);
+        int div2 = ThreadLocalRandom.current().nextInt(div1, genomeLength - 1); // at least 1 gene in each frag
 
         int[] newGenes = new int[genomeLength];
         System.arraycopy(parent1.genome, 0, newGenes, 0, div1);
@@ -30,12 +31,13 @@ public class Genome {
 
         this.genome = standardizeGenes(newGenes);
     }
-    private static int[] standardizeGenes(int[] genes){
+
+    private static int[] standardizeGenes(int[] genes) {
         Arrays.sort(genes);
-        while(!Arrays.stream(genes).boxed().collect(Collectors.toSet()).containsAll(possibleGenes)){
+        while (!Arrays.stream(genes).boxed().collect(Collectors.toSet()).containsAll(possibleGenes)) {
             for (int i = 0; i < 8; i++) {  // this function has high probability of placing new gene without generating new collision
                 final int a = i;
-                if (Arrays.stream(genes).noneMatch(g-> g==a)) {
+                if (Arrays.stream(genes).noneMatch(g -> g == a)) {
                     int flipIdx = new Random().nextInt(genomeLength);
                     genes[flipIdx] = i;
                 }
@@ -44,11 +46,12 @@ public class Genome {
         Arrays.sort(genes);
         return genes;
     }
-    public int getGeneAt(int idx){
+
+    int getGeneAt(int idx) {
         return genome[idx];
     }
 
-    public int[] getGenome() {
+    int[] getGenome() {
         return genome;
     }
 
@@ -64,8 +67,9 @@ public class Genome {
     public int hashCode() {
         return Arrays.hashCode(genome);
     }
+
     @Override
-    public String toString(){
+    public String toString() {
         return Arrays.toString(genome);
     }
 }

@@ -24,13 +24,13 @@ public class WorldConfig {
         return instance;
     }
 
-    public Rect jungleBounds(){
+    public Rect jungleBounds() {
         double jungleRatio = params.jungleRatio;
 
-        // TODO jungle can't be smaller than (1,1) ?
+        // jungle can't be smaller than (1,1)
         Vector2d jungleDimensions = new Vector2d(
-                max((int) Math.floor(params.width*jungleRatio),1),
-                max((int) Math.floor(params.height*jungleRatio), 1));
+                max((int) Math.floor(params.width * jungleRatio), 1),
+                max((int) Math.floor(params.height * jungleRatio), 1));
         Vector2d jungleLowerLeft = new Vector2d(
                 (params.width - jungleDimensions.x) / 2,
                 (params.height - jungleDimensions.y) / 2);
@@ -40,16 +40,17 @@ public class WorldConfig {
         // check if jungle within map
         Rect mapBounds = mapBounds();
         if (!mapBounds.lowerLeft.precedes(jungleLowerLeft)) {
-            throw new IllegalArgumentException("Jungle lower left corner can't precede map lower left corner"+ jungleLowerLeft);
+            throw new IllegalArgumentException("Jungle lower left corner can't precede map lower left corner" + jungleLowerLeft);
         }
         if (!mapBounds.upperRight.follows(jungleUpperRight)) {
             throw new IllegalArgumentException("Jungle upper right corner can't follow map upper right corner");
         }
         return new Rect(jungleLowerLeft, jungleUpperRight);
     }
-    public Rect mapBounds(){
+
+    public Rect mapBounds() {
         Vector2d lowerLeft = new Vector2d(0, 0);
-        Vector2d upperRight = new Vector2d(params.width-1, params.height-1);
+        Vector2d upperRight = new Vector2d(params.width - 1, params.height - 1);
         return new Rect(lowerLeft, upperRight);
     }
 }

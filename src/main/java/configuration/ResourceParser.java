@@ -19,7 +19,7 @@ public class ResourceParser {
             final FileInputStream input = new FileInputStream(images + name);
             return new Image(input);
         } catch (FileNotFoundException ignore) {
-            System.out.println("no image at: "+images+name);
+            System.out.println("no image at: " + images + name);
         }
         return null;
     }
@@ -29,12 +29,12 @@ public class ResourceParser {
     }
 
     public static Params parseParams(String name) {
-        try{
+        try {
             Gson gson = new Gson();
-            return gson.fromJson(new FileReader(configuration+name), Params.class);
-        }catch (IOException e){
+            return gson.fromJson(new FileReader(configuration + name), Params.class);
+        } catch (IOException e) {
             System.out.println("cant read the file");
-        }catch (JsonParseException e){
+        } catch (JsonParseException e) {
             System.out.println("parser error");
         }
         return null;

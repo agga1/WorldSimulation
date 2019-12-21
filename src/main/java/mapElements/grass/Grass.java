@@ -1,12 +1,13 @@
 package mapElements.grass;
 
 import mapElements.IMapElement;
-import visualization.Icon;
 import utils.Vector2d;
+import visualization.Icon;
 
 public class Grass implements IMapElement {
     private Vector2d position;
-    public Grass(Vector2d position){
+
+    public Grass(Vector2d position) {
         this.position = position;
     }
 
@@ -19,7 +20,7 @@ public class Grass implements IMapElement {
         return Icon.GRASS;
     }
 
-    public String toString(){
-        return "Grass at "+position ;
+    public String toString() {
+        return "Grass at " + position;
     }
 }

@@ -16,6 +16,17 @@ public class Vector2d {
         this.y = y;
     }
 
+    public static Vector2d randomFromSet(Set<Vector2d> set) {
+        if (set.isEmpty()) return null;
+        int idx = new Random().nextInt(set.size());
+        int i = 0;
+        for (Vector2d vector : set) {
+            if (i == idx) return vector;
+            i++;
+        }
+        return null;
+    }
+
     public String toString() {
         return "(" + this.x + ", " + this.y + ")";
     }
@@ -53,31 +64,22 @@ public class Vector2d {
         return (u.x == this.x) && (u.y == this.y);
     }
 
-    public Vector2d opposite() {
-        return new Vector2d((-1) * this.x, (-1) * this.y);
-    }
-
     public Vector2d mapToBoundaries(Vector2d[] boundaries) {
         Vector2d lowerLeft = boundaries[0];
         Vector2d upperRight = boundaries[1];
-        int newX  = this.x;
+        int newX = this.x;
         int newY = this.y;
-        if (this.x > upperRight.x){ newX = lowerLeft.x; }
-        else if(this.x < lowerLeft.x){ newX = upperRight.x; }
-        if (this.y > upperRight.y){ newY = lowerLeft.y; }
-        else if(this.y < lowerLeft.y){ newY = upperRight.y; }
-        return new Vector2d(newX, newY);
-    }
-
-    public static Vector2d randomFromSet(Set<Vector2d> set){
-        if(set.isEmpty()) return null;
-        int idx = new Random().nextInt(set.size());
-        int i=0;
-        for(Vector2d vector:set){
-            if(i==idx) return vector;
-            i++;
+        if (this.x > upperRight.x) {
+            newX = lowerLeft.x;
+        } else if (this.x < lowerLeft.x) {
+            newX = upperRight.x;
         }
-        return null;
+        if (this.y > upperRight.y) {
+            newY = lowerLeft.y;
+        } else if (this.y < lowerLeft.y) {
+            newY = upperRight.y;
+        }
+        return new Vector2d(newX, newY);
     }
 
     @Override
