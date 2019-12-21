@@ -2,42 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6f22226a-afcd-4ade-9a58-f69a51f990bd" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/mapElements/animal/AnimalStats.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/visualization/map/AnimalStats.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/visualization/map/TileContextMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/configuration/Stats.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/map/IPositionChangeObserver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/map/IAnimalObserver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/map/IWorldMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/map/IWorldMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/map/WorldMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/map/WorldMap.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/map/WorldStats.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/map/WorldStats.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/mapElements/ILivingMapElement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mapElements/ILivingMapElement.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/mapElements/animal/Animal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mapElements/animal/Animal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/mapElements/animal/AnimalHashMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mapElements/animal/AnimalHashMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/utils/Rect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utils/Rect.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/Icon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/Icon.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SettingsPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SettingsPane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/SimulationStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/SimulationStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/mapElements/animal/AnimalStats.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mapElements/animal/AnimalStats.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/map/AnimalStats.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/visualization/map/MapView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/map/MapView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/visualization/map/MapViewPane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/map/MapViewPane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/visualization/map/StatsView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/map/StatsView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/visualization/map/TileView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/visualization/map/TileView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/configuration/parameters.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/configuration/parameters.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/images/animalTracked.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/images/animalTracked.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/configuration/parameters.json" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/configuration/parameters.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/images/animalTracked.png" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/images/animalTracked.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/map/IPositionChangeObserver.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/map/IWorldMap.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/map/IWorldMap.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/map/WorldMap.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/map/WorldMap.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/map/WorldStats.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/map/WorldStats.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/mapElements/ILivingMapElement.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mapElements/ILivingMapElement.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/mapElements/animal/Animal.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mapElements/animal/Animal.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/mapElements/animal/AnimalHashMap.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mapElements/animal/AnimalHashMap.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/visualization/Icon.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/visualization/Icon.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/visualization/SettingsPane.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/visualization/SettingsPane.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/visualization/SimulationStatus.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/visualization/SimulationStatus.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/visualization/map/AnimalStats.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/visualization/map/MapView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/visualization/map/MapView.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/visualization/map/MapViewPane.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/visualization/map/MapViewPane.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/visualization/map/StatsView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/visualization/map/StatsView.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/visualization/map/TileView.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/visualization/map/TileView.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -52,8 +31,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -171,7 +150,8 @@
       <workItem from="1576676394142" duration="11161000" />
       <workItem from="1576697551628" duration="11131000" />
       <workItem from="1576792625687" duration="10963000" />
-      <workItem from="1576864203219" duration="3170000" />
+      <workItem from="1576864203219" duration="3575000" />
+      <workItem from="1576934341665" duration="3836000" />
     </task>
     <servers />
   </component>

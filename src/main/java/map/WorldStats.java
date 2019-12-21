@@ -1,11 +1,12 @@
 package map;
 
+import configuration.Stats;
 import mapElements.animal.Animal;
 import mapElements.animal.Genome;
 
 import java.util.*;
 
-public class WorldStats {
+public class WorldStats implements Stats {
         private int day=0;
         private HashMap<Genome, Integer> genomeVariations = new HashMap<>();
 
@@ -40,9 +41,9 @@ public class WorldStats {
         void updateNextDay(List<Animal> justDied, List<Animal> newborns, List<Animal> animals, int nrOfGrass){
             day++;
 
-            justDied.forEach(a-> allChildrenWithLivingParents -=a.getNrOfChildren());
-            justDied.forEach(a -> a.setDeathday(day));
-            lifeLengthForDeadSum = lifeLengthForDeadSum + justDied.size()*day- justDied.stream().mapToInt(Animal::getBirthday).sum();
+            justDied.forEach(a-> allChildrenWithLivingParents -=a.getStats().getNrOfChildren());
+            justDied.forEach(a -> a.getStats().setDeathday(day));
+            lifeLengthForDeadSum = lifeLengthForDeadSum + justDied.size()*day- justDied.stream().mapToInt(a-> a.getStats().getBirthday()).sum();
             nrOfDeaths += justDied.size();
             removeFromGenomeVariations(justDied);
             addToGenomeVariations(newborns);
@@ -55,12 +56,6 @@ public class WorldStats {
         }
         public int getDay(){
             return day;
-        }
-        public int getPlantCount(){
-            return  nrOfGrass;
-        }
-        public int getAnimalCount(){
-            return nrOfAnimals;
         }
 
         public double getAverageChildCount() {
@@ -76,7 +71,7 @@ public class WorldStats {
 
     @Override
     public String toString() {
-        return "WorldStats:" +
+        return "World Statisticss:" +
                 "\n day=" + day +
                 "\n dominantGenome=\n" + getDominantGenome()+
                 "\n average nr of children=" + getAverageChildCount() +

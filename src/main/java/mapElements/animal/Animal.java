@@ -21,12 +21,7 @@ public class Animal implements ILivingMapElement {
     private Set<IAnimalObserver> observers = new HashSet<>();
 
     private AnimalStats stats;
-    private List<Animal> ancestors = new ArrayList<>();
-    private int nrOfChildren=0;
-    private int nrOfDescendants=0;
-    private int birthday=0;
     private boolean isTracked=false;
-    private int deathday;
 
     public Animal(IWorldMap map, Vector2d initialPos) { // TODO make builder?
         this(map, initialPos, new Genome(), WorldConfig.getInstance().params.startEnergy);
@@ -36,20 +31,19 @@ public class Animal implements ILivingMapElement {
         this.position = initialPos;
         this.genome = genome;
         this.energy = energy;
+        this.stats = new AnimalStats();
         addObserver(map);
     }
     public Animal(IWorldMap map, Vector2d initialPos, Genome genome, int energy, Animal father, Animal mother, int birthday) {
-        this.birthday = birthday;
         this.map = map;
         this.position = initialPos;
         this.genome = genome;
         this.energy = energy;
-        this.ancestors.addAll(List.of(father, mother));
+        this.stats = new AnimalStats(birthday, List.of(father, mother));
         addObserver(map);
     }
 
     public void move(){
-
         this.energy -= WorldConfig.getInstance().params.moveEnergy; // movement takes 1 energy
         int geneIndex = ThreadLocalRandom.current().nextInt(this.genome.getGenome().length);
         int turnBy = this.genome.getGeneAt(geneIndex);
@@ -58,6 +52,7 @@ public class Animal implements ILivingMapElement {
         Vector2d newPosition = this.position
                 .add(this.orientation.toUnitVector())
                 .mapToBoundaries(this.map.getBoundaries());
+
         if(map.canMoveTo(newPosition)){
             this.position = newPosition;
             this.positionChanged(oldPosition, this.position);
@@ -70,8 +65,7 @@ public class Animal implements ILivingMapElement {
         this.energy = this.energy*3/4;
         other.energy = other.energy*3/4;
         Genome childGenome = new Genome(this.genome, other.genome);
-        nrOfChildren ++;
-        onNewKidInDaHouse();
+        stats.newKidInFamily();
         return Optional.of(new Animal(this.map, position, childGenome, newEnergy, this, other, birthday));
     }
 
@@ -102,14 +96,6 @@ public class Animal implements ILivingMapElement {
     public AnimalStats getStats(){
         return this.stats;
     }
-    private void notifyAncestors(){
-        ancestors.stream().filter(a->!a.isDead()).forEach(Animal::onNewKidInDaHouse);
-    }
-
-    private void onNewKidInDaHouse(){
-        this.nrOfDescendants++;
-        notifyAncestors();
-    }
 
     private void positionChanged(Vector2d oldPosition, Vector2d newPosition){ // notify observers
         for(IAnimalObserver observer : observers){
@@ -117,27 +103,14 @@ public class Animal implements ILivingMapElement {
         }
     }
 
-    public void track(){ isTracked = true; }
-    public void untrack(){ isTracked = false; }
-
     public boolean isTracked(){
         return isTracked;
     }
+    public void track(){ isTracked = true; }
+    public void untrack(){ isTracked = false; }
 
     public int getEnergy() {
         return energy;
-    }
-
-    public int getBirthday() {
-        return birthday;
-    }
-
-    public int getNrOfChildren() {
-        return nrOfChildren;
-    }
-
-    public void setDeathday(int deathday){
-        this.deathday = deathday;
     }
 
     public Genome getGenome() {
@@ -149,10 +122,6 @@ public class Animal implements ILivingMapElement {
                 +"\nenergy: "+energy
                 +"\ngenome:\n "+genome;
     }
-
-//    public String getStats(){
-//        return
-//    }
 
     @Override
     public Icon getIcon() {

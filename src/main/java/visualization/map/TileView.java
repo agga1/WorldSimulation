@@ -12,6 +12,8 @@ import mapElements.IMapElement;
 import mapElements.animal.Animal;
 import visualization.Icon;
 
+import java.util.Collections;
+
 public class TileView extends ImageView {
     private Tooltip tooltip;
     private IMapElement item;
@@ -65,6 +67,12 @@ public class TileView extends ImageView {
 //            else being.track();
 //            updateTile(item);
 //        }
+    }
+
+    public void onHighlight(){
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setBrightness(0.9);
+        this.setEffect(colorAdjust);
     }
 
 

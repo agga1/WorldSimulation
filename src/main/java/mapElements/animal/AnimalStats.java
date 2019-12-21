@@ -1,15 +1,19 @@
 package mapElements.animal;
 
-import java.util.ArrayList;
-import java.util.List;
+import configuration.Stats;
 
-public class AnimalStats {
-    private Animal animal;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+public class AnimalStats implements Stats {
     private int birthday=0;
+    private int deathday=0;
     private List<Animal> ancestors = new ArrayList<>();
     private int nrOfChildren=0;
     private int nrOfDescendants=0;
-    private boolean isTracked=false;
 
     public AnimalStats(){}
 
@@ -24,23 +28,30 @@ public class AnimalStats {
 
     public void newKidInFamily(){
         nrOfChildren++;
-        nrOfDescendants++;
-        ancestors.forEach(a -> a.getStats().newKidInFamily());
+        Set<Animal> alreadyNotified = new HashSet<>();
+        ancestors.stream().filter(a->!a.isDead()).forEach(a -> a.getStats().notifyAncestors(alreadyNotified));
     }
 
-    public List<Animal> getAncestors() {
-        return ancestors;
+    private void notifyAncestors(Set<Animal> alreadyNotified){
+        nrOfDescendants++;
+        Set<Animal> toNotify =  ancestors.stream().filter(a->!a.isDead()).filter(a->!alreadyNotified.contains(a)).collect(Collectors.toSet());
+        alreadyNotified.addAll(toNotify);
+        toNotify.forEach(a -> a.getStats().notifyAncestors(alreadyNotified));
     }
 
     public int getNrOfChildren() {
         return nrOfChildren;
     }
 
-    public int getNrOfDescendants() {
-        return nrOfDescendants;
+    public void setDeathday(int deathday) {
+        this.deathday = deathday;
     }
 
-    public boolean isTracked() {
-        return isTracked;
+    @Override
+    public String toString() {
+        return "Animal Statistics:" +
+                "\n deathday=" + deathday +
+                "\n nrOfChildren=" + nrOfChildren +
+                "\n nrOfDescendants=" + nrOfDescendants;
     }
 }

@@ -64,10 +64,10 @@ public class MapView extends GridPane {
         onTileUpdate(animal.getPosition(), animal);
         if(animal.isTracked())
             this.parent.onShowAnimalStats(animal);
-        else this.parent.onHideAnimalStats();
+        else this.parent.onShowAnimalStats(null);
     }
 
     public void highlightAnimals(List<Animal> animals){
-        animals.stream().map(Animal::getPosition);
+        animals.stream().map(Animal::getPosition).map(pos -> nodes.get(pos)).forEach(TileView::onHighlight);
     }
 }

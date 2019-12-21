@@ -1,0 +1,4 @@
+Animal Statistics:
+ deathday=0
+ nrOfChildren=0
+ nrOfDescendants=0
