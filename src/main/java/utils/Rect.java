@@ -33,5 +33,14 @@ public class Rect {
         }
         return collection;
     }
+    public int width(){
+        return upperRight.x - lowerLeft.x;
+    }
+    public int height(){
+        return upperRight.y - lowerLeft.y;
+    }
+    public int surface(){
+        return (upperRight.x - lowerLeft.x)*(upperRight.y - lowerLeft.y);
+    }
 }
 

@@ -17,7 +17,9 @@ public class AnimalHashMap {
             animalsAtPos.add(animal);
             animalMap.put(animal.getPosition(), animalsAtPos);
         }
-        else{ animalMap.get(animal.getPosition()).add(animal); }
+        else{
+            animalMap.get(animal.getPosition()).add(animal);
+        }
     }
 
     public void removeAnimal(Animal animal, Vector2d position){

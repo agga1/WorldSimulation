@@ -11,7 +11,7 @@ import utils.Vector2d;
  * @author apohllo
  *
  */
-public interface IWorldMap extends IPositionChangeObserver {
+public interface IWorldMap extends IAnimalObserver {
     /**
      * Indicate if any object can move to the given vector2d.
      *

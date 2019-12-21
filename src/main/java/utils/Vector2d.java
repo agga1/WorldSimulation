@@ -1,6 +1,8 @@
 package utils;
 
 import java.util.Objects;
+import java.util.Random;
+import java.util.Set;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -67,9 +69,17 @@ public class Vector2d {
         return new Vector2d(newX, newY);
     }
 
-    public Vector2d swapCoord(){
-        return new Vector2d(this.y, this.x);
+    public static Vector2d randomFromSet(Set<Vector2d> set){
+        if(set.isEmpty()) return null;
+        int idx = new Random().nextInt(set.size());
+        int i=0;
+        for(Vector2d vector:set){
+            if(i==idx) return vector;
+            i++;
+        }
+        return null;
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(x, y);
