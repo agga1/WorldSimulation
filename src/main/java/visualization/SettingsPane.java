@@ -48,10 +48,8 @@ public class SettingsPane extends VBox {
         Button stepDown = new Button();
         stepDown.setText("step / 10");
         stepDown.setOnAction(actionEvent -> simulationStatus.step = simulationStatus.step >= 10 ? simulationStatus.step/=10 : simulationStatus.step);
-        Button showGenome = new Button();
-        showGenome.setText("show dominant genome");
-        showGenome.setOnAction(actionEvent -> simulationStatus.showingGenome = !simulationStatus.showingGenome);
-        List<Button> buttons = List.of(pauseButton, stepUp, stepDown, showGenome);
+
+        List<Button> buttons = List.of(pauseButton, stepUp, stepDown);
         buttons.forEach(b -> b.setMinHeight(40));
         return buttons;
     }

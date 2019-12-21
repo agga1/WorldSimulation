@@ -2,7 +2,10 @@ package map;
 
 import mapElements.IMapElement;
 import mapElements.animal.Animal;
+import mapElements.animal.Genome;
 import utils.Vector2d;
+
+import java.util.List;
 
 /**
  * The interface responsible for interacting with the map of the world.
@@ -59,4 +62,6 @@ public interface IWorldMap extends IAnimalObserver {
     IMapElement objectAt(Vector2d vector2d);
 
     Vector2d[] getBoundaries();
+
+    List<Animal> getAnimalsWithGenome(Genome dominantGenome);
 }

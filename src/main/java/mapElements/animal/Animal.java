@@ -39,7 +39,8 @@ public class Animal implements ILivingMapElement {
         this.position = initialPos;
         this.genome = genome;
         this.energy = energy;
-        this.stats = new AnimalStats(birthday, List.of(father, mother));
+        this.stats = new AnimalStats(birthday, Set.of(father, mother));
+        stats.newKidInFamily();
         addObserver(map);
     }
 
@@ -65,7 +66,6 @@ public class Animal implements ILivingMapElement {
         this.energy = this.energy*3/4;
         other.energy = other.energy*3/4;
         Genome childGenome = new Genome(this.genome, other.genome);
-        stats.newKidInFamily();
         return Optional.of(new Animal(this.map, position, childGenome, newEnergy, this, other, birthday));
     }
 

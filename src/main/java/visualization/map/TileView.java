@@ -29,12 +29,6 @@ public class TileView extends ImageView {
         tooltip.getStyleClass().add("tile-tooltip");
         Tooltip.install(this, tooltip);
 
-//        MenuItem setTracking = new MenuItem("Set tracking");
-//        setTracking.setOnAction(e-> setAnimalTracking());
-//        MenuItem showSame = new MenuItem("Set tracking");
-//        setTracking.setOnAction(e-> setAnimalTracking());
-//        ContextMenu contextMenu = new ContextMenu(setTracking);
-//        this.setOnMouseClicked(e ->{ if(item instanceof Animal) contextMenu.show(this, e.getScreenX(), e.getScreenY());});
         this.setOnMouseClicked(e-> setAnimalTracking());
     }
 
@@ -61,12 +55,6 @@ public class TileView extends ImageView {
         if(this.item instanceof Animal) {
             this.parent.setTracking((Animal) this.item);
         }
-//        if(this.item instanceof ILivingMapElement){
-//            ILivingMapElement being = (ILivingMapElement) item;
-//            if(being.isTracked()) being.untrack();
-//            else being.track();
-//            updateTile(item);
-//        }
     }
 
     public void onHighlight(){

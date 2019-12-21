@@ -1,5 +1,7 @@
 package visualization.map;
 
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import map.WorldMap;
@@ -16,20 +18,26 @@ public class MapViewPane extends VBox implements UpdateListener{
     private StatsView statsView;
     private WorldMap worldMap;
     private StatsView animalStats;
+    private Button showGenome;
+
 
     public MapViewPane(WorldMap worldMap, double prefWidth, double prefHeight) {
         setPrefWidth(prefWidth);
         setPrefHeight(prefHeight);
         this.worldMap = worldMap;
         worldMap.setViewController(this);
+        showGenome = new Button();
+        showGenome.setText("show dominant genome");
+        showGenome.setOnAction(actionEvent -> onShowDominantGenome());
 
-        this.statsView = new StatsView( prefWidth, prefHeight*1/10, "worldstats.txt");
-        this.animalStats = new StatsView(0, prefHeight*1/10, "animalstats.txt");
+        this.statsView = new StatsView( prefWidth, 0, "worldstats.txt");
+        this.animalStats = new StatsView(0, 0, "animalstats.txt");
         HBox allStats = new HBox(statsView, animalStats);
+        allStats.setAlignment(Pos.TOP_LEFT);
 
-        this.mapView = new MapView(this, worldMap, prefWidth, prefHeight*9/10);
+        this.mapView = new MapView(this, worldMap, prefWidth, prefHeight*8.5/10);
 
-        this.getChildren().addAll(mapView, allStats);
+        this.getChildren().addAll(mapView, showGenome, allStats);
     }
     @Override
     public void onUpdate(Set<Vector2d> updated) {
@@ -40,8 +48,8 @@ public class MapViewPane extends VBox implements UpdateListener{
 // TODO add here button to show dimnant genome
     public void onShowDominantGenome(){
         Genome dominantGenome = worldMap.getStats().getDominantGenome();
-//        List<Animal> animals = this.worldMap.getAnimalsWithGenome(dominantGenome);
-//        this.mapView.highlightAnimals(List<Animal> animals);
+        List<Animal> animals = this.worldMap.getAnimalsWithGenome(dominantGenome);
+        this.mapView.highlightAnimals(animals);
     }
 
     public void onShowAnimalStats(Animal animal){

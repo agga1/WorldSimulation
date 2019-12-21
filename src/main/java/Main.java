@@ -38,6 +38,8 @@ public class Main extends Application {
         button.setText("start");
         this.vBox = new VBox(button);
 
+        Scene mainScene = new Scene(root, root.getWidth(), root.getHeight());
+        mainScene.getStylesheets().add(this.getClass().getResource("styles.css").toExternalForm());
         Thread thread = new Thread(() -> {
             Runnable runnable = this::updateSimulations;
             while (true) {
@@ -52,8 +54,7 @@ public class Main extends Application {
         });
         thread.setDaemon(true);
         thread.start();
-        stage.setScene(new Scene(root, root.getWidth(), root.getHeight()));
-//        stage.setScene(new Scene(vBox, WINDOW_WIDTH, WINDOW_HEIGHT));
+        stage.setScene(mainScene);
         stage.show();
 
     }

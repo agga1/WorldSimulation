@@ -11,13 +11,13 @@ import java.util.stream.Collectors;
 public class AnimalStats implements Stats {
     private int birthday=0;
     private int deathday=0;
-    private List<Animal> ancestors = new ArrayList<>();
+    private Set<Animal> ancestors = new HashSet<>();
     private int nrOfChildren=0;
     private int nrOfDescendants=0;
 
     public AnimalStats(){}
 
-    public AnimalStats( int birthday, List<Animal> ancestors){
+    public AnimalStats( int birthday, Set<Animal> ancestors){
         this.birthday = birthday;
         this.ancestors = ancestors;
     }
@@ -27,15 +27,14 @@ public class AnimalStats implements Stats {
     }
 
     public void newKidInFamily(){
-        nrOfChildren++;
-        Set<Animal> alreadyNotified = new HashSet<>();
-        ancestors.stream().filter(a->!a.isDead()).forEach(a -> a.getStats().notifyAncestors(alreadyNotified));
+        ancestors.forEach(a-> a.getStats().nrOfChildren++);
+        notifyAncestors(new HashSet<>());
     }
 
     private void notifyAncestors(Set<Animal> alreadyNotified){
-        nrOfDescendants++;
         Set<Animal> toNotify =  ancestors.stream().filter(a->!a.isDead()).filter(a->!alreadyNotified.contains(a)).collect(Collectors.toSet());
         alreadyNotified.addAll(toNotify);
+        toNotify.forEach(a-> a.getStats().nrOfDescendants++);
         toNotify.forEach(a -> a.getStats().notifyAncestors(alreadyNotified));
     }
 

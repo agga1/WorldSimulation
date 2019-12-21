@@ -1,29 +1,19 @@
 .root {
-    -fx-background-color: #5a595e;
+    -fx-background-color: #FCEADD;
 }
 
 .button {
-    -fx-background-color: #133b04;
+    -fx-background-color: #B34B6C;
     -fx-text-fill: white;
     -fx-font-size: 12;
     -fx-border-width: 5;
     /*-fx-border-color: #133b04;*/
     -fx-border-radius: 2;
 }
-
-.grassland-field {
-    -fx-background-color: #FFAF50;
+.button:hover {
+    -fx-background-color: #723146;
 }
 
-.jungle-field {
-    -fx-background-color: #4BB462;
-}
-
-.field {
-    -fx-border-color: #2F3640;
-    -fx-border-width: 0.3;
-    -fx-border-radius: 0;
-}
 .tool-bar {
     -fx-background-color: #0d2a03;
 }
@@ -37,10 +27,10 @@
     -fx-text-fill: #eee;
 }
 .menu:hover, .menu:focused, .menu:pressed {
-    -fx-background-color: #052555;
+    -fx-background-color: #B34B6C;
 }
 .menu-item:hover {
-    -fx-background-color: #052555;
+    -fx-background-color: #B33559;
 }
 .context-menu {
     -fx-background-color: rgba(0, 0, 0, 0.3);
@@ -51,6 +41,6 @@
     -fx-base: #AE3522;
     -fx-text-fill: orange;
     -fx-border-radius: 40;
-    -fx-background-color: #0d2a03;
+    -fx-background-color: #B34B6C;
 }
 

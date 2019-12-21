@@ -2,6 +2,7 @@ package map;
 
 import configuration.WorldConfig;
 import mapElements.ILivingMapElement;
+import mapElements.animal.Genome;
 import mapElements.grass.Grass;
 import mapElements.IMapElement;
 import mapElements.animal.Animal;
@@ -180,7 +181,7 @@ public class WorldMap implements IWorldMap {
     public IMapElement objectAt(Vector2d pos){ // returns any object
         List<Animal> animalsAtPos = animalMap.get(pos);
         if(animalsAtPos != null) {
-            if(tracked!= null && tracked.getPosition() == pos) return tracked;
+            if(tracked!= null && tracked.getPosition().equals(pos)) return tracked;
             return animalsAtPos.get(0);
         }
         return grassMap.get(pos);
@@ -192,6 +193,12 @@ public class WorldMap implements IWorldMap {
     public Vector2d[] getBoundaries() {
         return new Vector2d[]{this.rect.lowerLeft, this.rect.upperRight};
     }
+
+    @Override
+    public List<Animal> getAnimalsWithGenome(Genome dominantGenome) {
+        return animals.stream().filter(animal -> animal.getGenome().equals(dominantGenome)).collect(Collectors.toList());
+    }
+
     public Rect getRect(){ return this.rect; }
 
     public Rect getJungleRect() { return jungleRect; }
