@@ -30,7 +30,6 @@ public class MapViewPane extends VBox implements UpdateListener{
         this.mapView = new MapView(this, worldMap, prefWidth, prefHeight*9/10);
 
         this.getChildren().addAll(mapView, allStats);
-        System.out.println(getWidth());
     }
     @Override
     public void onUpdate(Set<Vector2d> updated) {

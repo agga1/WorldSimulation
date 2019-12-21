@@ -17,7 +17,6 @@ public class SimulationsViewPane extends VBox {
 
     public SimulationsViewPane(SimulationStatus simulationStatus, List<WorldMap> worldMaps, double prefWidth, double prefHeight){
         setPrefHeight(prefHeight);
-        System.out.println(prefWidth);
         setPrefWidth(prefWidth);
         // TODO create worldmaps in WorldViewController?
         this.nrOfSimulations = worldMaps.size();

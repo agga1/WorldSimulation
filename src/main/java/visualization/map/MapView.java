@@ -36,7 +36,6 @@ public class MapView extends GridPane {
     private void addTile(Vector2d position){// TODO - 50
         double edge = min(this.getPrefWidth()/WorldConfig.getInstance().params.width -1,
                 this.getPrefHeight()/WorldConfig.getInstance().params.height-1);
-        System.out.println(edge);
         TileView tile = new TileView(this, edge, edge);
 
         tile.updateTile(null);

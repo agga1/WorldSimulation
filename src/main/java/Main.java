@@ -43,7 +43,6 @@ public class Main extends Application {
             while (true) {
                 try {
                     Thread.sleep(simulationStatus.interval);
-                    System.out.println(simulationStatus.showingGenome);
                 } catch (InterruptedException ignore) {
                 }
                 if (simulationStatus.running) {
